@@ -8,6 +8,7 @@ class Member(models.Model):
     password = models.CharField(max_length=128)
     gender_choices = (("M", "Male"), ("F", "Female"), ("O", "Other"))
     gender = models.CharField(max_length=1, choices=gender_choices)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     join_date = models.DateField(auto_now_add=True)
     plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
 
