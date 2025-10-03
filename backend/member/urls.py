@@ -1,7 +1,7 @@
-from django.urls import path
-from . import views
+from rest_framework.routers import DefaultRouter
+from .views import MemberViewSet
 
-urlpatterns = [
-    path('', views.member_home, name='member_home'),
-    # Add more member URLs here
-]
+router = DefaultRouter()
+router.register(r'members', MemberViewSet, basename='member')
+
+urlpatterns = router.urls

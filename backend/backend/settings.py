@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'admin_pannel',
     'member',
     'trainer',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
