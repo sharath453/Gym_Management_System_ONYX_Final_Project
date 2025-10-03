@@ -1,53 +1,35 @@
-from rest_framework import viewsets
-from .models import Trainer, Workout, Attendance, Diet, BMI
+from rest_framework import viewsets, permissions
+from .models import Trainer, Workout, Diet, BMI, Attendance
 from .serializers import (
-    TrainerSerializer,
-    WorkoutSerializer,
-    AttendanceSerializer,
-    DietSerializer,
-    BMISerializer,
-    MemberForTrainerSerializer
+    TrainerSerializer, WorkoutSerializer, 
+    DietSerializer, BMISerializer, AttendanceSerializer
 )
-from member.models import Member
+# Remove the Member import from here
 
-# -----------------------------
-# Trainer CRUD
-# -----------------------------
 class TrainerViewSet(viewsets.ModelViewSet):
     queryset = Trainer.objects.all()
     serializer_class = TrainerSerializer
+    permission_classes = [permissions.AllowAny]
 
-# -----------------------------
-# Workout CRUD
-# -----------------------------
 class WorkoutViewSet(viewsets.ModelViewSet):
     queryset = Workout.objects.all()
     serializer_class = WorkoutSerializer
+    permission_classes = [permissions.AllowAny]
 
-# -----------------------------
-# Diet CRUD
-# -----------------------------
 class DietViewSet(viewsets.ModelViewSet):
     queryset = Diet.objects.all()
     serializer_class = DietSerializer
+    permission_classes = [permissions.AllowAny]
 
-# -----------------------------
-# BMI CRUD
-# -----------------------------
 class BMIViewSet(viewsets.ModelViewSet):
     queryset = BMI.objects.all()
     serializer_class = BMISerializer
+    permission_classes = [permissions.AllowAny]
 
-# -----------------------------
-# Attendance CRUD
-# -----------------------------
 class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
+    permission_classes = [permissions.AllowAny]
 
-# -----------------------------
-# Member list for trainers (read-only)
-# -----------------------------
-class MemberViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Member.objects.all()
-    serializer_class = MemberForTrainerSerializer
+# Remove MemberViewSet from trainer/views.py
+# We'll create it in member/views.py instead

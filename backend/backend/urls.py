@@ -10,9 +10,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),                
     path('', include('admin_pannel.urls')),          
-    path('member/', include('member.urls')),       
+    path('member/', include('member.urls')),     # Add this line  
     path('trainer/', include('trainer.urls')),     
-    
-    # ADD THIS LINE - Include your API routes
-    path('api/', include('trainer.urls')),  # This is the fix!
+    path('api/', include('trainer.urls')),
+    path('api/', include('member.urls')),  # Add this line
 ]

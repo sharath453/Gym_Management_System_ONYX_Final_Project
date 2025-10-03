@@ -4,8 +4,8 @@ from .views import (
     WorkoutViewSet,
     DietViewSet,
     BMIViewSet,
-    AttendanceViewSet,
-    MemberViewSet
+    AttendanceViewSet
+    # Remove MemberViewSet from here
 )
 
 router = DefaultRouter()
@@ -14,6 +14,6 @@ router.register(r'workouts', WorkoutViewSet)
 router.register(r'diets', DietViewSet)
 router.register(r'bmis', BMIViewSet)
 router.register(r'attendances', AttendanceViewSet)
-router.register(r'members', MemberViewSet, basename='member')
+# Remove members registration from here
 
 urlpatterns = router.urls
