@@ -32,9 +32,12 @@ class WorkoutViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if hasattr(user, 'trainer'):
+        if user.is_staff:  # Admin sees all workouts
+            return Workout.objects.all()
+        if hasattr(user, 'trainer'):  # Trainer sees only their workouts
             return Workout.objects.filter(trainer=user.trainer)
         return Workout.objects.none()
+
 
 # Attendance ViewSet
 class AttendanceViewSet(viewsets.ModelViewSet):
@@ -45,9 +48,12 @@ class AttendanceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if user.is_staff:
+            return Attendance.objects.all()
         if hasattr(user, 'trainer'):
             return Attendance.objects.filter(trainer=user.trainer)
         return Attendance.objects.none()
+
 
 # Diet ViewSet
 class DietViewSet(viewsets.ModelViewSet):
@@ -58,9 +64,12 @@ class DietViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if user.is_staff:
+            return Diet.objects.all()
         if hasattr(user, 'trainer'):
             return Diet.objects.filter(trainer=user.trainer)
         return Diet.objects.none()
+
 
 # BMI ViewSet
 class BMIViewSet(viewsets.ModelViewSet):
@@ -71,6 +80,9 @@ class BMIViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if user.is_staff:
+            return BMI.objects.all()
         if hasattr(user, 'trainer'):
             return BMI.objects.filter(trainer=user.trainer)
         return BMI.objects.none()
+

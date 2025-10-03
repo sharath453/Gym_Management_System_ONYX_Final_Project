@@ -1,13 +1,18 @@
 from rest_framework import serializers
 from .models import Trainer, Workout, Attendance, Diet, BMI
 from member.models import Member
+from django.contrib.auth.hashers import make_password
 
-# Trainer Serializer
 class TrainerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trainer
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
+
 
 # Workout Serializer
 class WorkoutSerializer(serializers.ModelSerializer):
