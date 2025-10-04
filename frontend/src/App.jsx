@@ -8,6 +8,7 @@ import Members from './pages/Admin/Members';
 // import Profile from './pages/Profile';
 import './App.css';
 import Login from "./components/Admin/Login";
+import Dashboard from "./components/Admin/Dashboard";
 import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
 
 function App() {
@@ -16,10 +17,10 @@ function App() {
       {/* <AdminLayout>
         <Routes>
         <Route
-          path="/admin"
+          path="/admin/dashboard"
           element={
             <ProtectedRoutes role="Admin">
-              <Admin />
+              <Dashboard />
             </ProtectedRoutes>
           }
         />
