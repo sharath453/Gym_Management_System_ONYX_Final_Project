@@ -1,7 +1,7 @@
 # accounts/urls.py
 from django.urls import path
-from .views import CustomTokenObtainView
+from .views import RoleLoginView
 
 urlpatterns = [
-    path('login/', CustomTokenObtainView.as_view(), name='custom_token_obtain'),
+    path('login/', RoleLoginView.as_view(), name='Login'),
 ]

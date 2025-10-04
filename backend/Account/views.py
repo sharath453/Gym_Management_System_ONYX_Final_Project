@@ -3,25 +3,22 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import check_password
-from .models import User
+from .serializers import LoginSerializer
+from rest_framework import status
 
-class CustomTokenObtainView(APIView):
+class RoleLoginView(APIView):
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
+        serializer = LoginSerializer(data=request.data)
+        if not serializer.is_valid():
+            print(serializer.errors)  # <-- see the exact validation error
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
 
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return Response({"error": "Invalid credentials"}, status=401)
-
-        if not check_password(password, user.password):
-            return Response({"error": "Invalid credentials"}, status=401)
-
+        # create JWT tokens
         refresh = RefreshToken.for_user(user)
         return Response({
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
-            "role": user.role,
-            "username": user.username
-        })
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'role': user.role,
+            'username': user.username
+        }, status=status.HTTP_200_OK)
