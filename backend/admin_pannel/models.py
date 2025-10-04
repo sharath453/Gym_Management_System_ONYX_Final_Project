@@ -6,6 +6,7 @@ class Admin(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         # Hash password if it's not already hashed

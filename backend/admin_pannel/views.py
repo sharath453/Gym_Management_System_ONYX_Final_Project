@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -10,7 +12,12 @@ from trainer.models import Attendance
 from trainer.models import Trainer
 from django.contrib.auth.hashers import make_password
 
+
 # ----------------- Admin Home -----------------
+
+# Create your views here.
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def admin_home(request):
     return HttpResponse("Hi, this is the Admin Home Page")
 

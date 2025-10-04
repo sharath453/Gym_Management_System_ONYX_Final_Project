@@ -1,17 +1,25 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
-  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    navigate("/");
+  };
+
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/members', label: 'Members', icon: '👥' },
     { path: '/trainers', label: 'Trainers', icon: '💪' },
     { path: '/plans', label: 'Plans', icon: '📋' },
-    // { path: '/memberships', label: 'Memberships', icon: '🎫' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' }
+    { path: '/settings', label: 'Settings', icon: '⚙️' },
   ];
 
   return (
@@ -21,12 +29,13 @@ const AdminLayout = ({ children }) => {
         <div className="logo">
           <h2>FitVerse</h2>
         </div>
+
         <nav className="nav-menu">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) => 
+              className={({ isActive }) =>
                 `nav-item ${isActive ? 'active' : ''}`
               }
             >
@@ -35,8 +44,18 @@ const AdminLayout = ({ children }) => {
             </NavLink>
           ))}
         </nav>
-        
-        {/* Admin Section */}
+
+        {/* Logout Button */}
+        <div className="logout-section">
+          <button
+            onClick={handleLogout}
+            className="logout-button"
+          >
+            🚪 Logout
+          </button>
+        </div>
+
+        {/* Admin Info */}
         <div className="admin-section">
           <div className="admin-header">Admin</div>
           <div className="admin-role">Administrator</div>
@@ -46,10 +65,10 @@ const AdminLayout = ({ children }) => {
       {/* Main Content */}
       <div className="main-content">
         <header className="content-header">
-          <h1>{
-            menuItems.find(item => item.path === location.pathname)?.label || 
-            'Dashboard'
-          }</h1>
+          <h1>
+            {menuItems.find(item => item.path === location.pathname)?.label ||
+              'Dashboard'}
+          </h1>
         </header>
         <div className="content-area">
           {children}
