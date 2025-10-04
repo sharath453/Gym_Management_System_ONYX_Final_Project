@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Admin/Login";
-import Admin from "./components/Admin/admin";
+import Dashboard from "./components/Admin/Dashboard";
 import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
 export default function App() {
   return (
@@ -8,10 +8,10 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
-          path="/admin"
+          path="/admin/dashboard"
           element={
             <ProtectedRoutes role="Admin">
-              <Admin />
+              <Dashboard />
             </ProtectedRoutes>
           }
         />

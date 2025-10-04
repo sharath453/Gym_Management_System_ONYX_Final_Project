@@ -31,7 +31,7 @@ export default function Login() {
       // redirect based on role (case sensitive)
       switch (res.data.role) {
         case "Admin":
-          navigate("/admin");
+          navigate("/admin/dashboard");
           break;
         case "Trainer":
           navigate("/trainer");
