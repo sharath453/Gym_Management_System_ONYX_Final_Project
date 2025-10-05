@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, is_password_usable
 
 class Admin(models.Model):
     username = models.CharField(max_length=50, unique=True)
@@ -9,13 +9,16 @@ class Admin(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Hash password if it's not already hashed
-        if not self.pk or 'password' in self.get_dirty_fields():  # for new object or updated password
+        print("Before hashing:", self.password)
+        if not is_password_usable(self.password):
             self.password = make_password(self.password)
+        print("After hashing:", self.password)
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.username
+
 
 
 class Plan(models.Model):
