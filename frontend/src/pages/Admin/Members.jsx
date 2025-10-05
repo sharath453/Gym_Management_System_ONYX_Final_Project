@@ -8,6 +8,7 @@ const Members = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [newMember, setNewMember] = useState({
     username: "",
     name: "",
@@ -17,6 +18,13 @@ const Members = () => {
     phone_number: "",
     plan: "",
   });
+
+  const filteredMembers = members.filter(
+    (member) =>
+      member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Fetch members and plans from API
   const fetchMembers = async () => {
@@ -84,36 +92,36 @@ const Members = () => {
   };
 
   // Update member
- const handleUpdateMember = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/admin/members/${editingMember.id}/`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: editingMember.username,
-          name: editingMember.name,
-          email: editingMember.email,
-          gender: editingMember.gender,
-          phone_number: editingMember.phone_number,
-          plan: editingMember.plan_id, // Change plan_id to plan
-        }),
-      }
-    );
+  const handleUpdateMember = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/admin/members/${editingMember.id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: editingMember.username,
+            name: editingMember.name,
+            email: editingMember.email,
+            gender: editingMember.gender,
+            phone_number: editingMember.phone_number,
+            plan: editingMember.plan_id, // Change plan_id to plan
+          }),
+        }
+      );
 
-    if (response.ok) {
-      setShowEditForm(false);
-      setEditingMember(null);
-      fetchMembers(); // Refresh the list
+      if (response.ok) {
+        setShowEditForm(false);
+        setEditingMember(null);
+        fetchMembers(); // Refresh the list
+      }
+    } catch (error) {
+      console.error("Error updating member:", error);
     }
-  } catch (error) {
-    console.error("Error updating member:", error);
-  }
-};
+  };
 
   // Delete member
   const handleDeleteMember = async (memberId) => {
@@ -138,6 +146,17 @@ const Members = () => {
         <button className="add-button" onClick={() => setShowAddForm(true)}>
           Add New Member
         </button>
+      </div>
+
+      {/* Search Bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by name,email or username..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
       </div>
 
       {/* Add Member Form */}
@@ -329,7 +348,7 @@ const Members = () => {
           </tr>
         </thead>
         <tbody>
-          {members.map((member) => (
+          {filteredMembers.map((member) => (
             <tr key={member.id}>
               <td>{member.name}</td>
               <td>{member.username}</td>
