@@ -12,6 +12,4 @@ urlpatterns = [
     path('', include('admin_pannel.urls')),          
     path('member/', include('member.urls')),     # Add this line  
     path('trainer/', include('trainer.urls')),     
-    path('api/', include('trainer.urls')),
-    path('api/', include('member.urls')),  # Add this line
 ]

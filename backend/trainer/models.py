@@ -1,5 +1,5 @@
 from django.db import models
-from member.models import Member
+# from member.models import Member
 
 class Trainer(models.Model):
     username = models.CharField(max_length=50, unique=True)
@@ -15,7 +15,7 @@ class Trainer(models.Model):
 
 
 class Workout(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='workouts')
+    member = models.ForeignKey('member.Member', on_delete=models.CASCADE, related_name='workouts')
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, related_name='workouts')
     details = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,7 +27,7 @@ class Workout(models.Model):
 
 class Attendance(models.Model):
     STATUS_CHOICES = (("Present", "Present"), ("Absent", "Absent"))
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='attendances')
+    member = models.ForeignKey('member.Member', on_delete=models.CASCADE, related_name='attendances')
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, related_name='attendances')
     date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
@@ -40,7 +40,7 @@ class Attendance(models.Model):
 
 
 class Diet(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='diets')
+    member = models.ForeignKey('member.Member', on_delete=models.CASCADE, related_name='diets')
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, related_name='diets')
     diet_time = models.TimeField()
     details = models.TextField()
@@ -52,7 +52,7 @@ class Diet(models.Model):
 
 
 class BMI(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='bmis')
+    member = models.ForeignKey('member.Member', on_delete=models.CASCADE, related_name='bmis')
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, related_name='bmis')
     height_cm = models.FloatField()
     weight_kg = models.FloatField()
