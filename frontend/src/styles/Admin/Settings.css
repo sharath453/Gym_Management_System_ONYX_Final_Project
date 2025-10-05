@@ -1,0 +1,95 @@
+.settings-container {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start; 
+  min-height: 100vh; 
+  padding-top: 20px; 
+  background: linear-gradient(135deg, #ac4949,#fcfcfc, #6892e5); /* page background: light gradient */
+  color: #000000;
+}
+
+/* Inner Profile Card */
+.settings-card {
+  background: rgba(255, 255, 255, 0.95); /* card background: almost solid white for contrast */
+  backdrop-filter: blur(5px);
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  width: 400px;
+  text-align: center;
+}
+
+/* Heading */
+.settings-heading {
+  margin-bottom: 20px;
+  color: #4f6ef7;
+}
+
+/* Info Section */
+.settings-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+/* Password Form */
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.password-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+}
+
+.password-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Buttons */
+.change-password-btn,
+.update-btn {
+  background: #4f6ef7;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.change-password-btn:hover,
+.update-btn:hover {
+  background: #3b53c6;
+}
+
+.cancel-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #da190b;
+}
+
+/* Message */
+.settings-message {
+  margin-top: 15px;
+  color: #00e676;
+  font-weight: bold;
+}

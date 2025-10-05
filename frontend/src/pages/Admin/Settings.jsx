@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../../styles/Admin/Settings.css";
 
 const Profile = () => {
   const [profile, setProfile] = useState({});
@@ -8,7 +9,6 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [showChangePassword, setShowChangePassword] = useState(false);
 
-  // Fetch admin profile
   const fetchProfile = async () => {
     try {
       const username = localStorage.getItem("username");
@@ -26,7 +26,6 @@ const Profile = () => {
     }
   };
 
-  // Handle password change
   const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
@@ -55,31 +54,11 @@ const Profile = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        fontFamily: "Poppins, sans-serif",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #4e72e1ff)",
-        color: "#fff",
-      }}
-    >
-      <div
-        style={{
-          background: "rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(10px)",
-          padding: "30px 40px",
-          borderRadius: "20px",
-          boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
-          width: "400px",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px", color: "#00e676" }}>Admin Profile</h2>
+    <div className="settings-container">
+      <div className="settings-card">
+        <h2 className="settings-heading">Admin Profile</h2>
 
-        <div style={{ textAlign: "left", marginBottom: "20px" }}>
+        <div className="settings-info">
           <p><strong>Username:</strong> {profile.username}</p>
           <p><strong>Name:</strong> {profile.name}</p>
           <p><strong>Email:</strong> {profile.email}</p>
@@ -88,93 +67,37 @@ const Profile = () => {
 
         {!showChangePassword ? (
           <button
+            className="change-password-btn"
             onClick={() => setShowChangePassword(true)}
-            style={{
-              background: "#00e676",
-              color: "#000",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "10px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              transition: "0.3s",
-            }}
-            onMouseOver={(e) => (e.target.style.background = "#00c853")}
-            onMouseOut={(e) => (e.target.style.background = "#00e676")}
           >
             Change Password
           </button>
         ) : (
-          <form
-            onSubmit={handleChangePassword}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              marginTop: "10px",
-            }}
-          >
+          <form className="password-form" onSubmit={handleChangePassword}>
             <input
               type="password"
+              className="password-input"
               placeholder="Old Password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               required
               autoComplete="current-password"
-              style={{
-                padding: "10px",
-                borderRadius: "8px",
-                border: "none",
-                outline: "none",
-              }}
             />
             <input
               type="password"
+              className="password-input"
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
               autoComplete="new-password"
-              style={{
-                padding: "10px",
-                borderRadius: "8px",
-                border: "none",
-                outline: "none",
-              }}
             />
-            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-              <button
-                type="submit"
-                style={{
-                  background: "#00e676",
-                  color: "#000",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "0.3s",
-                }}
-                onMouseOver={(e) => (e.target.style.background = "#00c853")}
-                onMouseOut={(e) => (e.target.style.background = "#00e676")}
-              >
-                Update
-              </button>
+            <div className="password-buttons">
+              <button type="submit" className="update-btn">Update</button>
               <button
                 type="button"
+                className="cancel-btn"
                 onClick={() => setShowChangePassword(false)}
-                style={{
-                  background: "#ff1744",
-                  color: "#fff",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: "0.3s",
-                }}
-                onMouseOver={(e) => (e.target.style.background = "#d50000")}
-                onMouseOut={(e) => (e.target.style.background = "#ff1744")}
               >
                 Cancel
               </button>
@@ -182,11 +105,7 @@ const Profile = () => {
           </form>
         )}
 
-        {message && (
-          <p style={{ marginTop: "15px", color: "#ff9100", fontWeight: "bold" }}>
-            {message}
-          </p>
-        )}
+        {message && <p className="settings-message">{message}</p>}
       </div>
     </div>
   );
