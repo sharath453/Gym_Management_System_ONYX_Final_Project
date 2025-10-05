@@ -23,13 +23,13 @@ export default function Login() {
 
       switch (res.data.role) {
         case "Admin":
-          navigate("/admin/dashboard");
+          navigate("/admin");
           break;
         case "Trainer":
-          navigate("/trainer/dashboard");
+          navigate("/trainer");
           break;
         case "Member":
-          navigate("/member/dashboard");
+          navigate("/member");
           break;
         default:
           navigate("/");

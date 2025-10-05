@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import check_password
 from .models import User as User
+from admin_pannel.models import Plan,Admin
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -24,3 +27,14 @@ class LoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
+    
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = "__all__"
+
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Admin
+        fields = ['username', 'name', 'email', 'phone_number']
