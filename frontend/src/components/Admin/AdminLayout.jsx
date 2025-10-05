@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate, NavLink, useLocation } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation, Outlet } from 'react-router-dom';
 import './AdminLayout.css';
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -15,11 +15,11 @@ const AdminLayout = ({ children }) => {
   };
 
   const menuItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/members', label: 'Members', icon: '👥' },
-    { path: '/trainers', label: 'Trainers', icon: '💪' },
-    { path: '/plans', label: 'Plans', icon: '📋' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' },
+    { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/admin/members', label: 'Members', icon: '👥' },
+    { path: '/admin/trainers', label: 'Trainers', icon: '💪' },
+    { path: '/admin/plans', label: 'Plans', icon: '📋' },
+    { path: '/admin/profile', label: 'Profile', icon: '👤' }, // Changed from settings
   ];
 
   return (
@@ -71,7 +71,7 @@ const AdminLayout = ({ children }) => {
           </h1>
         </header>
         <div className="content-area">
-          {children}
+          <Outlet /> {/* This renders the nested routes (Dashboard, Members, etc.) */}
         </div>
       </div>
     </div>
