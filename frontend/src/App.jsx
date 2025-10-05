@@ -5,41 +5,45 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Login from "./components/Admin/Login";
+import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
 import AdminLayout from "./components/Admin/AdminLayout";
 import Dashboard from "./pages/Admin/Dashboard";
 import Members from "./pages/Admin/Members";
-// import Trainers from './pages/Admin/Trainers';
-// import Plans from './pages/Plans';
-// import Profile from './pages/Profile';
+import Plan from "./pages/Admin/Plans";
+import Profile from "./pages/Admin/Settings";
+import Trainer from "./pages/Admin/Trainers";
 import "./App.css";
-import Login from "./components/Admin/Login";
-import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
-import Trainers from "./pages/Admin/Trainers";
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirect base path to login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Public route */}
         <Route path="/login" element={<Login />} />
 
-        {/* Protected Admin routes */}
-        <Route 
-          path="/admin" 
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
           element={
             <ProtectedRoutes role="Admin">
               <AdminLayout />
             </ProtectedRoutes>
           }
         >
+          {/* Nested routes (relative paths, no leading /) */}
+          <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="members" element={<Members />} />
-          <Route path="trainers" element={<Trainers />} />
-          {/* <Route path="plans" element={<Plans />} />
-          <Route path="profile" element={<Profile />} /> */}
-          <Route index element={<Navigate to="dashboard" />} />
+          <Route path="plans" element={<Plan />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="trainers" element={<Trainer />} />
         </Route>
 
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* Fallback for unknown routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
