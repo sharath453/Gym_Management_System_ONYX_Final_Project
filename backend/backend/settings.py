@@ -41,13 +41,20 @@ INSTALLED_APPS = [
     'admin_pannel',
     'member',
     'trainer',
+    'Account',
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
-    'corsheaders',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Move this to the top
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +62,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Remove the duplicate CORS and CommonMiddleware from here
+    'corsheaders.middleware.CorsMiddleware',#for CORS middleware
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # React Vite frontend
+    "http://127.0.0.1:5173",
 ]
 
 ROOT_URLCONF = 'backend.urls'

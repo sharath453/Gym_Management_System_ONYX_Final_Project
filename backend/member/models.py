@@ -28,6 +28,7 @@ class Member(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     join_date = models.DateField(auto_now_add=True)
     plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
     trainer = models.ForeignKey(
