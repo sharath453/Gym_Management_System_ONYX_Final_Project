@@ -10,71 +10,40 @@ import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
 import AdminLayout from "./components/Admin/AdminLayout";
 import Dashboard from "./pages/Admin/Dashboard";
 import Members from "./pages/Admin/Members";
-import Plan from "./pages/Admin/Plans"
-import Profile from "./pages/Admin/Settings"
-import Trainer from "./pages/Admin/Trainers"
+import Plan from "./pages/Admin/Plans";
+import Profile from "./pages/Admin/Settings";
+import Trainer from "./pages/Admin/Trainers";
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirect base path to login */}
         <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Public route */}
         <Route path="/login" element={<Login />} />
-        <Route 
-          path="/admin" 
+
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
           element={
             <ProtectedRoutes role="Admin">
               <AdminLayout />
             </ProtectedRoutes>
           }
         >
+          {/* Nested routes (relative paths, no leading /) */}
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="members" element={<Members />} />
+          <Route path="plans" element={<Plan />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="trainers" element={<Trainer />} />
         </Route>
-        <Route 
-          path="/admin/dashboard" 
-          element={
-            <ProtectedRoutes role="Admin">
-              <Dashboard />
-            </ProtectedRoutes>
-          }
-        >
-        </Route>
-         <Route 
-          path="/admin/members" 
-          element={
-            <ProtectedRoutes role="Admin">
-              <Members />
-            </ProtectedRoutes>
-          }
-        >
-        </Route>
-         <Route 
-          path="/admin/plans" 
-          element={
-            <ProtectedRoutes role="Admin">
-              <Plan />
-            </ProtectedRoutes>
-          }
-        >
-        </Route>
-         <Route 
-          path="/admin/profile" 
-          element={
-            <ProtectedRoutes role="Admin">
-              <Profile />
-            </ProtectedRoutes>
-          }
-        >
-        </Route>
-         <Route 
-          path="/admin/trainers" 
-          element={
-            <ProtectedRoutes role="Admin">
-              <Trainer />
-            </ProtectedRoutes>
-          }
-        >
-        </Route>
+
+        {/* Fallback for unknown routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
