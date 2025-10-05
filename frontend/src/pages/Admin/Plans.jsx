@@ -6,6 +6,7 @@ const Plans = () => {
   const [newPlan, setNewPlan] = useState({ name: "", duration_days: "", price: "" });
   const [editingPlanId, setEditingPlanId] = useState(null);
   const [editingPlanData, setEditingPlanData] = useState({ name: "", duration_days: "", price: "" });
+  const [isAdding, setIsAdding] = useState(false); // 👈 NEW toggle for add form
 
   const API_URL = "http://127.0.0.1:8000/api/admin/plan/";
 
@@ -30,6 +31,7 @@ const Plans = () => {
       const res = await axios.post(API_URL, newPlan);
       setPlans([...plans, res.data]);
       setNewPlan({ name: "", duration_days: "", price: "" });
+      setIsAdding(false); // 👈 Hide form after adding
     } catch (err) {
       console.error("Error adding plan:", err);
     }
@@ -105,6 +107,7 @@ const Plans = () => {
           display: flex;
           gap: 10px;
           flex-wrap: wrap;
+          margin-top: 10px;
         }
         input {
           padding: 10px;
@@ -129,6 +132,8 @@ const Plans = () => {
         .edit-btn:hover { background-color: #e68a00; }
         .delete-btn { background-color: #f44336; color: white; }
         .delete-btn:hover { background-color: #da190b; }
+        .cancel-btn { background-color: #9e9e9e; color: white; }
+        .cancel-btn:hover { background-color: #7e7e7e; }
       `}</style>
 
       <h2>Plans</h2>
@@ -151,7 +156,9 @@ const Plans = () => {
                   <input
                     type="text"
                     value={editingPlanData.name}
-                    onChange={(e) => setEditingPlanData({ ...editingPlanData, name: e.target.value })}
+                    onChange={(e) =>
+                      setEditingPlanData({ ...editingPlanData, name: e.target.value })
+                    }
                   />
                 ) : (
                   plan.name
@@ -163,7 +170,10 @@ const Plans = () => {
                     type="number"
                     value={editingPlanData.duration_days}
                     onChange={(e) =>
-                      setEditingPlanData({ ...editingPlanData, duration_days: e.target.value })
+                      setEditingPlanData({
+                        ...editingPlanData,
+                        duration_days: e.target.value,
+                      })
                     }
                   />
                 ) : (
@@ -175,7 +185,9 @@ const Plans = () => {
                   <input
                     type="number"
                     value={editingPlanData.price}
-                    onChange={(e) => setEditingPlanData({ ...editingPlanData, price: e.target.value })}
+                    onChange={(e) =>
+                      setEditingPlanData({ ...editingPlanData, price: e.target.value })
+                    }
                   />
                 ) : (
                   plan.price
@@ -183,42 +195,83 @@ const Plans = () => {
               </td>
               <td>
                 {editingPlanId === plan.id ? (
-                  <button className="edit-btn" onClick={() => handleUpdatePlan(plan.id)}>Save</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleUpdatePlan(plan.id)}
+                  >
+                    Save
+                  </button>
                 ) : (
-                  <button className="edit-btn" onClick={() => handleEditClick(plan)}>Edit</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEditClick(plan)}
+                  >
+                    Edit
+                  </button>
                 )}
-                <button className="delete-btn" onClick={() => handleDeletePlan(plan.id)}>Delete</button>
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeletePlan(plan.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Add Plan Form */}
-      <form onSubmit={handleAddPlan}>
-        <input
-          type="text"
-          placeholder="Plan Name"
-          value={newPlan.name}
-          onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Duration (days)"
-          value={newPlan.duration_days}
-          onChange={(e) => setNewPlan({ ...newPlan, duration_days: e.target.value })}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Price (₹)"
-          value={newPlan.price}
-          onChange={(e) => setNewPlan({ ...newPlan, price: e.target.value })}
-          required
-        />
-        <button type="submit" className="add-btn">Add Plan</button>
-      </form>
+      {/* Add Plan Toggle */}
+      {!isAdding ? (
+        <button
+          className="add-btn"
+          onClick={() => setIsAdding(true)}
+        >
+          + Add New Plan
+        </button>
+      ) : (
+        <>
+          <form onSubmit={handleAddPlan}>
+            <input
+              type="text"
+              placeholder="Plan Name"
+              value={newPlan.name}
+              onChange={(e) =>
+                setNewPlan({ ...newPlan, name: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Duration (days)"
+              value={newPlan.duration_days}
+              onChange={(e) =>
+                setNewPlan({ ...newPlan, duration_days: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Price (₹)"
+              value={newPlan.price}
+              onChange={(e) =>
+                setNewPlan({ ...newPlan, price: e.target.value })
+              }
+              required
+            />
+            <button type="submit" className="add-btn">
+              Save Plan
+            </button>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={() => setIsAdding(false)}
+            >
+              Cancel
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 };
