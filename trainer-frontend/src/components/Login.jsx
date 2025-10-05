@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authAPI, testAPI } from '../services/api';
+import { authAPI } from '../services/api';
 
 const Login = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
@@ -8,27 +8,34 @@ const Login = ({ onLogin }) => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [debugInfo, setDebugInfo] = useState('');
 
-  const testConnection = async () => {
-    try {
-      const response = await testAPI.testConnection();
-      setDebugInfo(`API Connection: SUCCESS - ${response.status}`);
-      console.log('API Test Response:', response.data);
-    } catch (error) {
-      setDebugInfo(`API Connection: FAILED - ${error.message}`);
-      console.error('API Test Error:', error);
+  const motivationQuotes = [
+    {
+      text: "The only bad workout is the one that didn't happen",
+            author: "Rajanna"
+
+      
+    },
+    {
+      text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't",
+      author: "Rikki Rogers"
+    },
+    {
+      text: "Your body can stand almost anything. It's your mind that you have to convince",
+      author: "Suprith"
+    },
+    {
+      text: "The hardest lift of all is lifting your butt off the couch",
+      author: "Sharath"
     }
-  };
+  ];
+
+  const randomQuote = motivationQuotes[Math.floor(Math.random() * motivationQuotes.length)];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setDebugInfo('');
-
-    // Test credentials format
-    console.log('Login attempt with:', credentials);
 
     try {
       const response = await authAPI.login(credentials);
@@ -37,8 +44,7 @@ const Login = ({ onLogin }) => {
       if (response.data.access) {
         localStorage.setItem('accessToken', response.data.access);
         localStorage.setItem('refreshToken', response.data.refresh);
-        setDebugInfo('Login successful!');
-        onLogin();
+        setTimeout(() => onLogin(), 1000);
       } else {
         throw new Error('No access token received');
       }
@@ -49,7 +55,6 @@ const Login = ({ onLogin }) => {
                           error.message || 
                           'Invalid credentials. Please try again.';
       setError(errorMessage);
-      setDebugInfo(`Error: ${error.response?.status} - ${JSON.stringify(error.response?.data)}`);
     } finally {
       setLoading(false);
     }
@@ -63,58 +68,77 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h2>Trainer Login</h2>
-        
-        {/* Debug section */}
-        <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#f8f9fa', borderRadius: '5px' }}>
-          <button 
-            type="button" 
-            onClick={testConnection}
-            style={{ marginBottom: '0.5rem', padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
-          >
-            Test API Connection
-          </button>
-          {debugInfo && (
-            <div style={{ fontSize: '0.8rem', color: '#666' }}>
-              Debug: {debugInfo}
-            </div>
-          )}
+    <div className="hero-section">
+      <div className="animated-bg"></div>
+      <div className="hero-content">
+        {/* Motivation Quote */}
+        <div className="motivation-quote pulse">
+          <h3>Welcome to FitVerse</h3>
+          <p>"{randomQuote.text}"</p>
+          <small>— {randomQuote.author}</small>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Username:</label>
-            <input
-              type="text"
-              name="username"
-              value={credentials.username}
-              onChange={handleChange}
-              placeholder="Enter your username"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={credentials.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          {error && <div className="error">{error}</div>}
-          <button type="submit" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
+        {/* Login Form */}
+        <div className="login-form">
+          <h2>Trainer Portal</h2>
 
-        {/* Sample credentials hint for development */}
-        <div style={{ marginTop: '1rem', padding: '0.5rem', background: '#e7f3ff', borderRadius: '5px', fontSize: '0.8rem' }}>
-          <strong>Development Tip:</strong> Make sure you have trainers in your database with correct credentials.
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>👤 Username</label>
+              <input
+                type="text"
+                name="username"
+                value={credentials.username}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                required
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label>🔒 Password</label>
+              <input
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+                disabled={loading}
+              />
+            </div>
+            {error && (
+              <div className="error" style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.5rem',
+                marginBottom: '1rem'
+              }}>
+                ⚠️ {error}
+              </div>
+            )}
+            <button 
+              type="submit" 
+              className="btn btn-primary btn-lg"
+              disabled={loading}
+              style={{ width: '100%' }}
+            >
+              {loading ? '🔄 Logging in...' : '🚀 Login to Dashboard'}
+            </button>
+          </form>
+
+          {/* Development tip */}
+          <div style={{ 
+            marginTop: '1.5rem', 
+            padding: '1rem', 
+            background: 'rgba(255,159,28,0.1)', 
+            borderRadius: 'var(--border-radius)',
+            border: '1px solid rgba(255,159,28,0.2)',
+            fontSize: '0.8rem',
+            textAlign: 'center'
+          }}>
+            <strong>💡 Trainer Tip:</strong> Use your registered username and password to access the dashboard.
+          </div>
         </div>
       </div>
     </div>

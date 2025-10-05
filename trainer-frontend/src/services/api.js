@@ -75,7 +75,6 @@ export const membersAPI = {
   },
   get: (id) => api.get(`/members/${id}/`),
 };
-// ... existing code ...
 
 export const attendanceAPI = {
   create: async (data) => {
@@ -89,27 +88,23 @@ export const attendanceAPI = {
   },
   update: (id, data) => api.put(`/attendances/${id}/`, data),
   list: () => api.get('/attendances/'),
+  delete: (id) => api.delete(`/attendances/${id}/`),
 };
+
+ 
 
 export const workoutAPI = {
-  create: async (data) => {
-    try {
-      const response = await api.post('/workouts/', data);
-      return response;
-    } catch (error) {
-      console.error('Workout API Error:', error.response?.data);
-      throw error;
-    }
-  },
-  update: (id, data) => api.put(`/workouts/${id}/`, data),
+  create: (data) => api.post('/workouts/', data),
+  update: (id, data) => api.put(`/workouts/${id}/`, data), // Make sure this exists
   list: () => api.get('/workouts/'),
+  delete: (id) => api.delete(`/workouts/${id}/`),
 };
 
-// ... rest of the code ...
 export const dietAPI = {
   create: (data) => api.post('/diets/', data),
-  update: (id, data) => api.put(`/diets/${id}/`, data),
+  update: (id, data) => api.put(`/diets/${id}/`, data), // Make sure this exists
   list: () => api.get('/diets/'),
+  delete: (id) => api.delete(`/diets/${id}/`),
 };
 
 export const bmiAPI = {
@@ -125,7 +120,5 @@ export const bmiAPI = {
 export const testAPI = {
   testConnection: () => api.get('/trainers/'),
 };
-
-
 
 export default api;
