@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import viewsets, permissions
+from .models import Member
+from .serializers import MemberSerializer
 
-# Create your views here.
-def member_home(request):
-    return HttpResponse("Hi, this is the Member Home Page")
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+    permission_classes = [permissions.AllowAny]
