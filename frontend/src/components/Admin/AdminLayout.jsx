@@ -51,7 +51,7 @@ const AdminLayout = () => {
             onClick={handleLogout}
             className="logout-button"
           >
-            🚪 Logout
+            ↩️ Logout
           </button>
         </div>
 

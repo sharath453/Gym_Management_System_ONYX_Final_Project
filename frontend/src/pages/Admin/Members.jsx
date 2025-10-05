@@ -12,16 +12,15 @@ const Members = () => {
     username: "",
     name: "",
     email: "",
-    password: "", // Admin sets initial password
+    password: "",
     gender: "",
-    phone_number: "", // Match your model field name
+    phone_number: "",
     plan: "",
   });
 
   // Fetch members and plans from API
   const fetchMembers = async () => {
     try {
-      console.log("Fetching members...");
       const response = await fetch("http://127.0.0.1:8000/api/admin/members/");
       const data = await response.json();
       setMembers(data);
@@ -77,41 +76,44 @@ const Members = () => {
 
   // Edit member
   const handleEditMember = (member) => {
-    setEditingMember(member);
+    setEditingMember({
+      ...member,
+      plan_id: member.plan, // Copy plan value to plan_id for the form
+    });
     setShowEditForm(true);
   };
 
   // Update member
-  const handleUpdateMember = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/admin/members/${editingMember.id}/`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: editingMember.username,
-            name: editingMember.name,
-            email: editingMember.email,
-            gender: editingMember.gender,
-            phone_number: editingMember.phone_number,
-            plan_id: editingMember.plan_id,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        setShowEditForm(false);
-        setEditingMember(null);
-        fetchMembers(); // Refresh the list
+ const handleUpdateMember = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/admin/members/${editingMember.id}/`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: editingMember.username,
+          name: editingMember.name,
+          email: editingMember.email,
+          gender: editingMember.gender,
+          phone_number: editingMember.phone_number,
+          plan: editingMember.plan_id, // Change plan_id to plan
+        }),
       }
-    } catch (error) {
-      console.error("Error updating member:", error);
+    );
+
+    if (response.ok) {
+      setShowEditForm(false);
+      setEditingMember(null);
+      fetchMembers(); // Refresh the list
     }
-  };
+  } catch (error) {
+    console.error("Error updating member:", error);
+  }
+};
 
   // Delete member
   const handleDeleteMember = async (memberId) => {
@@ -319,6 +321,7 @@ const Members = () => {
             <th>Name</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Phone Number</th>
             <th>Plan</th>
             <th>Gender</th>
             <th>Join Date</th>
@@ -331,6 +334,7 @@ const Members = () => {
               <td>{member.name}</td>
               <td>{member.username}</td>
               <td>{member.email}</td>
+              <td>{member.phone_number}</td>
               <td>{getPlanName(member.plan)}</td>
               <td>{member.gender}</td>
               <td>{member.join_date}</td>

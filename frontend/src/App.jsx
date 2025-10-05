@@ -14,6 +14,7 @@ import Members from "./pages/Admin/Members";
 import "./App.css";
 import Login from "./components/Admin/Login";
 import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
+import Trainers from "./pages/Admin/Trainers";
 
 function App() {
   return (
@@ -32,8 +33,8 @@ function App() {
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="members" element={<Members />} />
-          {/* <Route path="trainers" element={<Trainers />} />
-          <Route path="plans" element={<Plans />} />
+          <Route path="trainers" element={<Trainers />} />
+          {/* <Route path="plans" element={<Plans />} />
           <Route path="profile" element={<Profile />} /> */}
           <Route index element={<Navigate to="dashboard" />} />
         </Route>
