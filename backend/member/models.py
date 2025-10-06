@@ -14,6 +14,10 @@ class Member(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
 
     trainer = models.ForeignKey('trainer.Trainer', on_delete=models.SET_NULL, null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)  # in cm
+    weight = models.FloatField(null=True, blank=True)  # in kg
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     
     def __str__(self):
         return self.username
