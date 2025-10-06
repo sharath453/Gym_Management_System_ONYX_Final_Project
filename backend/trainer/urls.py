@@ -1,7 +1,14 @@
+from rest_framework.routers import DefaultRouter
+from .views import TrainerViewSet, WorkoutViewSet, DietViewSet, BMIViewSet, AttendanceViewSet, trainer_login
 from django.urls import path
-from . import views
 
-urlpatterns = [
-    path('', views.trainer_home, name='trainer_home'),
-    # Add more trainer URLs here
+router = DefaultRouter()
+router.register(r'trainers', TrainerViewSet)    
+router.register(r'workouts', WorkoutViewSet)
+router.register(r'diets', DietViewSet)
+router.register(r'bmis', BMIViewSet)
+router.register(r'attendances', AttendanceViewSet)
+
+urlpatterns = router.urls + [
+    path('trainer-login/', trainer_login, name='trainer-login'),
 ]

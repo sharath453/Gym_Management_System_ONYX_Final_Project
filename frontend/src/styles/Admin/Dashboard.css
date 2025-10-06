@@ -1,0 +1,107 @@
+.dashboard-container {
+  font-family: 'Poppins', sans-serif;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3f3f3, #e0e0ff);
+}
+
+/* Heading */
+.dashboard-heading {
+  margin-bottom: 40px;
+  color: #4f6ef7;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Cards Container using Grid */
+.dashboard-card-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr)); /* two cards per row, flexible width */
+  gap: 20px;
+  justify-items: center;
+}
+
+/* Individual Cards */
+.dashboard-card {
+  width: 100%; /* fills grid cell without overflowing */
+  max-width: 300px; /* limits card size to avoid overlap */
+  color: #fff;
+  padding: 25px 20px;
+  border-radius: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Distinct Gradient Backgrounds */
+.dashboard-card.total-members {
+  background: linear-gradient(135deg, #4f6ef7, #667eea);
+}
+
+.dashboard-card.active-trainers {
+  background: linear-gradient(135deg, #00e676, #00c853);
+}
+
+.dashboard-card.total-plans {
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+}
+
+.dashboard-card.total-revenue {
+  background: linear-gradient(135deg, #9c27b0, #ba68c8);
+}
+
+/* Card Hover Effect */
+.dashboard-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Titles */
+.dashboard-card h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Card Numbers */
+.dashboard-card p {
+  font-size: 28px;
+  font-weight: 800;
+  margin-top: 12px;
+}
+
+/* Optional Floating Circles */
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  top: -15px;
+  right: -15px;
+  transform: rotate(45deg);
+}
+
+.dashboard-card.total-revenue::before {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dashboard-card.total-plans::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  .dashboard-card-container {
+    grid-template-columns: 1fr; /* 1 card per row on mobile */
+  }
+  .dashboard-card {
+    max-width: 100%;
+  }
+}

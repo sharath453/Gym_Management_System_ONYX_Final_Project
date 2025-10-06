@@ -1,35 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import Login from "./components/Admin/Login";
+import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
+import AdminLayout from "./components/Admin/AdminLayout";
+import AdminDashboard from "./pages/Admin/Dashboard";
+import Members from "./pages/Admin/Members";
+import Plan from "./pages/Admin/Plans";
+import Profile from "./pages/Admin/Settings";
+import Trainer from "./pages/Admin/Trainers";
+
+// Member Components
+import Layout from "./components/member/Layout";
+import MemberDashboard from "./components/member/Dashboard";
+import ProfilePage from "./components/member/ProfilePage";
+import DietPage from "./components/member/DietPage";
+import WorkoutsPage from "./components/member/WorkoutsPage";
+import AttendancePage from "./components/member/AttendancePage";
+import BMIPage from "./components/member/BMIPage";
+
+import "./App.css";
+
+import TrainerDashboard from "./components/Trainer/components/Dashboard"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const role = localStorage.getItem("role");
+  const username = localStorage.getItem("username");
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+
+        {/* Universal Login */}
+        <Route path="/login" element={<Login />} />
+
+        {/* 🧩 Admin Protected Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoutes role="Admin">
+              <AdminLayout />
+            </ProtectedRoutes>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="members" element={<Members />} />
+          <Route path="plans" element={<Plan />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="trainers" element={<Trainer />} />
+        </Route>
+
+        {/* 💪 Member Routes */}
+        <Route
+          path="/member/:username/*"
+          element={
+            <ProtectedRoutes role="Member">
+              <Layout />
+            </ProtectedRoutes>
+          }
+        >
+          <Route index element={<MemberDashboard />} />
+          <Route path="dashboard" element={<MemberDashboard />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="diet" element={<DietPage />} />
+          <Route path="workouts" element={<WorkoutsPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="bmi" element={<BMIPage />} />
+        </Route>
+
+        <Route
+          path="/trainer"
+          element={
+            <ProtectedRoutes role="Trainer">
+              <TrainerDashboard />
+            </ProtectedRoutes>
+          }
+        ></Route>
+
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
