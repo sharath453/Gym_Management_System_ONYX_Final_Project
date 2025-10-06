@@ -308,3 +308,17 @@
   outline: none;
   border-color: #007acc;
 }
+.action-btn.assign {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.action-btn.assign:hover {
+  background: #d4edda;
+}

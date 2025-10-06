@@ -1,6 +1,7 @@
 from django.db import models
 from admin_pannel.models import Plan
 
+
 class Member(models.Model):
     username = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
@@ -12,5 +13,7 @@ class Member(models.Model):
     join_date = models.DateField(auto_now_add=True)
     plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
 
+    trainer = models.ForeignKey('trainer.Trainer', on_delete=models.SET_NULL, null=True, blank=True)
+    
     def __str__(self):
         return self.username

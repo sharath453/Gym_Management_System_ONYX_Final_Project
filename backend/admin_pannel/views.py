@@ -36,6 +36,21 @@ class MemberViewSet(viewsets.ModelViewSet):
             member.save()
             return Response({"status": "Password updated successfully"})
         return Response({"error": "Password not provided"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['post'])
+    def assign_trainer(self, request, pk=None):
+        member = self.get_object()
+        trainer_id = request.data.get('trainer_id')
+        
+        try:
+            trainer = Trainer.objects.get(id=trainer_id)
+            member.trainer = trainer
+            member.save()
+            
+            serializer = self.get_serializer(member)
+            return Response(serializer.data)
+        except Trainer.DoesNotExist:
+            return Response({"error": "Trainer not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 # ----------------- Trainer ViewSet -----------------
