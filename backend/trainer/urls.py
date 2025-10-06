@@ -1,7 +1,19 @@
-from django.urls import path
-from . import views
+from rest_framework.routers import DefaultRouter
+from .views import (
+    TrainerViewSet,
+    WorkoutViewSet,
+    DietViewSet,
+    BMIViewSet,
+    AttendanceViewSet
+    # Remove MemberViewSet from here
+)
 
-urlpatterns = [
-    path('', views.trainer_home, name='trainer_home'),
-    # Add more trainer URLs here
-]
+router = DefaultRouter()
+router.register(r'trainers', TrainerViewSet)
+router.register(r'workouts', WorkoutViewSet)
+router.register(r'diets', DietViewSet)
+router.register(r'bmis', BMIViewSet)
+router.register(r'attendances', AttendanceViewSet)
+# Remove members registration from here
+
+urlpatterns = router.urls
