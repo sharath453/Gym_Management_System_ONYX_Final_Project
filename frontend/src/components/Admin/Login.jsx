@@ -29,7 +29,7 @@ export default function Login() {
           navigate("/trainer");
           break;
         case "Member":
-          navigate("/member");
+          navigate(`/member/${res.data.username}/*`);
           break;
         default:
           navigate("/");

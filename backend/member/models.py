@@ -21,8 +21,6 @@ from admin_pannel.models import Plan
 # from trainer.models import Trainer
 
 class Member(models.Model):
-    GENDER_CHOICES = (("M", "Male"), ("F", "Female"), ("O", "Other"))
-
     username = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)

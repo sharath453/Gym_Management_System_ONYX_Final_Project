@@ -67,7 +67,6 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # React Vite frontend
     "http://127.0.0.1:5173",
-    # Remove the duplicate CORS and CommonMiddleware from here
 ]
 
 ROOT_URLCONF = 'backend.urls'

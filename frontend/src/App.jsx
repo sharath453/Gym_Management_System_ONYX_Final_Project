@@ -5,29 +5,41 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import Login from "./components/Admin/Login";
 import ProtectedRoutes from "./components/ProtectRoutes/ProtectRoutes";
 import AdminLayout from "./components/Admin/AdminLayout";
-import Dashboard from "./pages/Admin/Dashboard";
+import AdminDashboard from "./pages/Admin/Dashboard";
 import Members from "./pages/Admin/Members";
 import Plan from "./pages/Admin/Plans";
 import Profile from "./pages/Admin/Settings";
 import Trainer from "./pages/Admin/Trainers";
+
+// Member Components
+import Layout from "./components/member/Layout";
+import MemberDashboard from "./components/member/Dashboard";
+import ProfilePage from "./components/member/ProfilePage";
+import DietPage from "./components/member/DietPage";
+import WorkoutsPage from "./components/member/WorkoutsPage";
+import AttendancePage from "./components/member/AttendancePage";
+import BMIPage from "./components/member/BMIPage";
+
 import "./App.css";
 
 import TrainerDashboard from "./components/Trainer/components/Dashboard"
 
 function App() {
+  const role = localStorage.getItem("role");
+  const username = localStorage.getItem("username");
+
   return (
     <Router>
       <Routes>
-        {/* Redirect base path to login */}
-        <Route path="/" element={<Navigate to="/login" />} />
 
-        {/* Public route */}
+        {/* Universal Login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Protected Admin Routes */}
+        {/* 🧩 Admin Protected Routes */}
         <Route
           path="/admin"
           element={
@@ -36,13 +48,30 @@ function App() {
             </ProtectedRoutes>
           }
         >
-          {/* Nested routes (relative paths, no leading /) */}
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="members" element={<Members />} />
           <Route path="plans" element={<Plan />} />
           <Route path="profile" element={<Profile />} />
           <Route path="trainers" element={<Trainer />} />
+        </Route>
+
+        {/* 💪 Member Routes */}
+        <Route
+          path="/member/:username/*"
+          element={
+            <ProtectedRoutes role="Member">
+              <Layout />
+            </ProtectedRoutes>
+          }
+        >
+          <Route index element={<MemberDashboard />} />
+          <Route path="dashboard" element={<MemberDashboard />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="diet" element={<DietPage />} />
+          <Route path="workouts" element={<WorkoutsPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="bmi" element={<BMIPage />} />
         </Route>
 
         <Route
@@ -54,8 +83,7 @@ function App() {
           }
         ></Route>
 
-        {/* Fallback for unknown routes */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );

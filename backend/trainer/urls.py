@@ -3,7 +3,7 @@ from .views import TrainerViewSet, WorkoutViewSet, DietViewSet, BMIViewSet, Atte
 from django.urls import path
 
 router = DefaultRouter()
-router.register(r'trainers', TrainerViewSet)
+router.register(r'trainers', TrainerViewSet)    
 router.register(r'workouts', WorkoutViewSet)
 router.register(r'diets', DietViewSet)
 router.register(r'bmis', BMIViewSet)
