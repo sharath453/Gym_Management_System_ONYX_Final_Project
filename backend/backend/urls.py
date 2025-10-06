@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),# Login → JWT
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),# Refresh token             
     path('', include('admin_pannel.urls')),          
-    path('api/', include('member.urls')),     # Add this line  
+    path('api/', include('member.urls')),
+    path('member/', include('member.urls')),   # Add this line  
     path('api/', include('trainer.urls')), 
 ]
