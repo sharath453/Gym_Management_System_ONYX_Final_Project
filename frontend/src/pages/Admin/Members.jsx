@@ -9,6 +9,10 @@ const Members = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAssignTrainerForm, setShowAssignTrainerForm] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [trainers, setTrainers] = useState([]);
+  const [selectedTrainer, setSelectedTrainer] = useState("");
   const [newMember, setNewMember] = useState({
     username: "",
     name: "",
@@ -25,6 +29,45 @@ const Members = () => {
       member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const fetchTrainers = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/admin/trainers/");
+      const data = await response.json();
+      setTrainers(data);
+    } catch (error) {
+      console.error("Error fetching trainers:", error);
+    }
+  };
+
+  // Assign trainer to member
+  const handleAssignTrainer = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/admin/members/${selectedMember.id}/assign_trainer/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            trainer_id: selectedTrainer,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setShowAssignTrainerForm(false);
+        setSelectedMember(null);
+        setSelectedTrainer("");
+        fetchMembers(); // Refresh the list
+        alert("Trainer assigned successfully!");
+      }
+    } catch (error) {
+      console.error("Error assigning trainer:", error);
+    }
+  };
 
   // Fetch members and plans from API
   const fetchMembers = async () => {
@@ -52,12 +95,18 @@ const Members = () => {
   useEffect(() => {
     fetchMembers();
     fetchPlans();
+    fetchTrainers();
   }, []);
 
   // Get plan name by ID
   const getPlanName = (planId) => {
     const plan = plans.find((p) => p.id === planId);
     return plan ? plan.name : "No Plan";
+  };
+  // Get trainer name by ID
+  const getTrainerName = (trainerId) => {
+    const trainer = trainers.find((t) => t.id === trainerId);
+    return trainer ? trainer.name : "No Trainer Assigned";
   };
 
   // Add new member
@@ -245,6 +294,41 @@ const Members = () => {
           </div>
         </div>
       )}
+      {/* Assign Trainer Form */}
+      {showAssignTrainerForm && selectedMember && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Assign Trainer to {selectedMember.name}</h3>
+            <form onSubmit={handleAssignTrainer}>
+              <select
+                value={selectedTrainer}
+                onChange={(e) => setSelectedTrainer(e.target.value)}
+                required
+              >
+                <option value="">Select Trainer</option>
+                {trainers.map((trainer) => (
+                  <option key={trainer.id} value={trainer.id}>
+                    {trainer.name} - {trainer.specialty}
+                  </option>
+                ))}
+              </select>
+              <div className="form-actions">
+                <button type="submit">Assign Trainer</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAssignTrainerForm(false);
+                    setSelectedMember(null);
+                    setSelectedTrainer("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Edit Member Form */}
       {showEditForm && editingMember && (
@@ -344,6 +428,7 @@ const Members = () => {
             <th>Plan</th>
             <th>Gender</th>
             <th>Join Date</th>
+            <th>Assigned Trainer</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -358,11 +443,25 @@ const Members = () => {
               <td>{member.gender}</td>
               <td>{member.join_date}</td>
               <td>
+                {member.trainer
+                  ? getTrainerName(member.trainer)
+                  : "No Trainer Assigned"}
+              </td>
+              <td>
                 <button
                   className="action-btn edit"
                   onClick={() => handleEditMember(member)}
                 >
                   Edit ✏️
+                </button>
+                <button
+                  className="action-btn assign"
+                  onClick={() => {
+                    setSelectedMember(member);
+                    setShowAssignTrainerForm(true);
+                  }}
+                >
+                  Assign Trainer 👥
                 </button>
                 <button
                   className="action-btn delete"

@@ -19,7 +19,7 @@
   --gray: #6c757d;
   --gray-light: #e9ecef;
   --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff8e53 100%);
-  --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #e9ecf7 100%);
   --gradient-hero: linear-gradient(135deg, rgba(26,26,46,0.9) 0%, rgba(22,33,62,0.9) 100%);
   --border-radius: 16px;
   --border-radius-lg: 24px;
