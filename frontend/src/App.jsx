@@ -15,6 +15,8 @@ import Profile from "./pages/Admin/Settings";
 import Trainer from "./pages/Admin/Trainers";
 import "./App.css";
 
+import TrainerDashboard from "./components/Trainer/components/Dashboard"
+
 function App() {
   return (
     <Router>
@@ -42,6 +44,15 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="trainers" element={<Trainer />} />
         </Route>
+
+        <Route
+          path="/trainer"
+          element={
+            <ProtectedRoutes role="Trainer">
+              <TrainerDashboard />
+            </ProtectedRoutes>
+          }
+        ></Route>
 
         {/* Fallback for unknown routes */}
         <Route path="*" element={<Navigate to="/login" />} />
